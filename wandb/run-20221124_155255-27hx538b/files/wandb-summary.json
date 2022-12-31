@@ -1,0 +1,1 @@
+{"train/total_loss": 5.40405797958374, "train/iou_loss": 1.6404991149902344, "train/l1_loss": 0.0, "train/conf_loss": 2.3363468647003174, "train/cls_loss": 1.4272119998931885, "train/lr": 0.002487669562566682, "train/step": 403, "_timestamp": 1669272895.1089554, "_runtime": 119.21589946746826, "_step": 39, "_wandb": {"runtime": 124}}

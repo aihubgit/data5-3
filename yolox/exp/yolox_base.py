@@ -18,7 +18,7 @@ class Exp(BaseExp):
 
         # ---------------- model config ---------------- #
         # detect classes number of model
-        self.num_classes = 80
+        self.num_classes = 65
         # factor of model depth
         self.depth = 1.00
         # factor of model width
@@ -60,7 +60,7 @@ class Exp(BaseExp):
         self.translate = 0.1
         self.mosaic_scale = (0.1, 2)
         # apply mixup aug or not
-        self.enable_mixup = True
+        self.enable_mixup = False
         self.mixup_scale = (0.5, 1.5)
         # shear angle range, for example, if set to 2, the true range is (-2, 2)
         self.shear = 2.0

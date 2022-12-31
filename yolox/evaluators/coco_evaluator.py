@@ -36,7 +36,9 @@ def per_class_AR_table(coco_eval, class_names=COCO_CLASSES, headers=["class", "A
     assert len(class_names) == recalls.shape[1]
 
     for idx, name in enumerate(class_names):
-        recall = recalls[:, idx, 0, -1]
+        #change
+        #recall = recalls[:, idx, 0, -1]
+        recall = recalls[0, idx, 0, -1]
         recall = recall[recall > -1]
         ar = np.mean(recall) if recall.size else float("nan")
         per_class_AR[name] = float(ar * 100)
@@ -61,7 +63,10 @@ def per_class_AP_table(coco_eval, class_names=COCO_CLASSES, headers=["class", "A
     for idx, name in enumerate(class_names):
         # area range index 0: all area ranges
         # max dets index -1: typically 100 per image
-        precision = precisions[:, :, idx, 0, -1]
+        
+        #change
+        #precision = precisions[:, :, idx, 0, -1]
+        precision = precisions[0, :, idx, 0, -1]
         precision = precision[precision > -1]
         ap = np.mean(precision) if precision.size else float("nan")
         per_class_AP[name] = float(ap * 100)
@@ -180,7 +185,6 @@ class COCOEvaluator:
                 if is_time_record:
                     nms_end = time_synchronized()
                     nms_time += nms_end - infer_end
-
             data_list_elem, image_wise_data = self.convert_to_coco_format(
                 outputs, info_imgs, ids, return_outputs=True)
             data_list.extend(data_list_elem)
@@ -210,7 +214,7 @@ class COCOEvaluator:
             if output is None:
                 continue
             output = output.cpu()
-
+   
             bboxes = output[:, 0:4]
 
             # preprocessing: resize
@@ -220,7 +224,10 @@ class COCOEvaluator:
             bboxes /= scale
             cls = output[:, 6]
             scores = output[:, 4] * output[:, 5]
-
+            
+            
+	    
+	    
             image_wise_data.update({
                 int(img_id): {
                     "bboxes": [box.numpy().tolist() for box in bboxes],
@@ -302,7 +309,16 @@ class COCOEvaluator:
                 cocoEval.summarize()
             info += redirect_string.getvalue()
             cat_ids = list(cocoGt.cats.keys())
-            cat_names = [cocoGt.cats[catId]['name'] for catId in sorted(cat_ids)]
+            
+            #change
+            cat_names = []
+            for catId in sorted(cat_ids):
+            	catname = cocoGt.cats[catId]["name"]
+            	catlevel2 = cocoGt.cats[catId]["level2"]
+            	catlevel1 = cocoGt.cats[catId]["level1"]
+            	cl = catlevel1 + '_' + catlevel2 + '_' + catname
+            	cat_names.append(cl)
+            #cat_names = [cocoGt.cats[catId]['name'] for catId in sorted(cat_ids)]
             if self.per_class_AP:
                 AP_table = per_class_AP_table(cocoEval, class_names=cat_names)
                 info += "per class AP:\n" + AP_table + "\n"

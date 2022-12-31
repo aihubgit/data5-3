@@ -66,7 +66,18 @@ class COCODataset(Dataset):
         self.ids = self.coco.getImgIds()
         self.class_ids = sorted(self.coco.getCatIds())
         self.cats = self.coco.loadCats(self.coco.getCatIds())
-        self._classes = tuple([c["name"] for c in self.cats])
+        self._classes = ()
+        cl_li = []
+        for c in self.cats:
+        	catname = c["name"]
+        	catlevel2 = c["level2"]
+        	catlevel1 = c["level1"]
+        	cl = catlevel1 + '_' + catlevel2 + '_' + catname
+        	cl_li.append(cl)
+        self._classes = sorted(cl_li)
+        self._classes = tuple(cl_li)
+                
+        #self._classes = tuple([c["name"] for c in self.cats])
         self.imgs = None
         self.name = name
         self.img_size = img_size
